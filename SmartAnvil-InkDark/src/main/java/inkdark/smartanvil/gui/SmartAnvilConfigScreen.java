@@ -1,3 +1,4 @@
+
 package inkdark.smartanvil.gui;
 
 import inkdark.smartanvil.config.SmartAnvilConfig;
@@ -42,22 +43,25 @@ public final class SmartAnvilConfigScreen extends Screen {
 
         y += 27;
         addDrawableChild(ButtonWidget.builder(delayLabel(), button -> {
-            cfg.actionDelayTicks = cfg.actionDelayTicks >= 10 ? 1 : cfg.actionDelayTicks + 1;
+            cfg.actionDelayTicks = cfg.actionDelayTicks >= 10
+                    ? 1 : cfg.actionDelayTicks + 1;
             button.setMessage(delayLabel());
             SmartAnvilConfig.save();
         }).dimensions(left, y, 310, 20).build());
 
         y += 27;
         addDrawableChild(ButtonWidget.builder(linesLabel(), button -> {
-            cfg.maxEnchantmentLines = cfg.maxEnchantmentLines >= 12 ? 1 : cfg.maxEnchantmentLines + 1;
+            cfg.maxEnchantmentLines = cfg.maxEnchantmentLines >= 12
+                    ? 1 : cfg.maxEnchantmentLines + 1;
             button.setMessage(linesLabel());
             SmartAnvilConfig.save();
         }).dimensions(left, y, 310, 20).build());
 
         y += 27;
         addDrawableChild(ButtonWidget.builder(levelsLabel(), button -> {
-            cfg.maxTotalEnchantmentLevels = cfg.maxTotalEnchantmentLevels >= 100
-                    ? 10 : cfg.maxTotalEnchantmentLevels + 10;
+            cfg.maxTotalEnchantmentLevels =
+                    cfg.maxTotalEnchantmentLevels >= 100
+                            ? 10 : cfg.maxTotalEnchantmentLevels + 10;
             button.setMessage(levelsLabel());
             SmartAnvilConfig.save();
         }).dimensions(left, y, 310, 20).build());
@@ -76,8 +80,10 @@ public final class SmartAnvilConfigScreen extends Screen {
             SmartAnvilConfig.save();
         }).dimensions(left, y, 310, 20).build());
 
-        addDrawableChild(ButtonWidget.builder(Text.literal("Done"), button -> close())
-                .dimensions(left, height - 32, 310, 20).build());
+        addDrawableChild(ButtonWidget.builder(
+                Text.literal("Done"),
+                button -> close()
+        ).dimensions(left, height - 32, 310, 20).build());
     }
 
     private Text modeLabel() {
@@ -85,7 +91,9 @@ public final class SmartAnvilConfigScreen extends Screen {
     }
 
     private Text sideLabel() {
-        return Text.literal("Anvil side priority: " + cfg.sidePriority + " (click to switch)");
+        return Text.literal(
+                "Anvil side priority: " + cfg.sidePriority + " (click to switch)"
+        );
     }
 
     private Text delayLabel() {
@@ -93,36 +101,65 @@ public final class SmartAnvilConfigScreen extends Screen {
     }
 
     private Text linesLabel() {
-        return Text.literal("Max enchantment lines: " + cfg.maxEnchantmentLines);
+        return Text.literal(
+                "Max enchantment lines: " + cfg.maxEnchantmentLines
+        );
     }
 
     private Text levelsLabel() {
-        return Text.literal("Max total enchantment levels: " + cfg.maxTotalEnchantmentLevels);
+        return Text.literal(
+                "Max total enchantment levels: "
+                        + cfg.maxTotalEnchantmentLevels
+        );
     }
 
     private Text autoRemoveLabel() {
-        return Text.literal("Auto-remove maxed books: " + (cfg.autoRemoveMaxedBooks ? "ON" : "OFF"));
+        return Text.literal(
+                "Auto-remove maxed books: "
+                        + (cfg.autoRemoveMaxedBooks ? "ON" : "OFF")
+        );
     }
 
     private Text statusLabel() {
-        return Text.literal("Status messages: " + (cfg.showStatusMessages ? "ON" : "OFF"));
+        return Text.literal(
+                "Status messages: "
+                        + (cfg.showStatusMessages ? "ON" : "OFF")
+        );
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBackground(context, mouseX, mouseY, delta);
-        context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 18, 0xFFFFFF);
+    public void render(
+            DrawContext context,
+            int mouseX,
+            int mouseY,
+            float delta
+    ) {
+        // Draw a dark background without requesting Minecraft's blur effect.
+        context.fill(0, 0, width, height, 0xC0101010);
+
+        context.drawCenteredTextWithShadow(
+                textRenderer,
+                title,
+                width / 2,
+                18,
+                0xFFFFFF
+        );
+
         context.drawCenteredTextWithShadow(
                 textRenderer,
                 Text.literal("Settings are saved to config/smartanvil.json"),
-                width / 2, 35, 0xAAAAAA
+                width / 2,
+                35,
+                0xAAAAAA
         );
+
         super.render(context, mouseX, mouseY, delta);
     }
 
     @Override
     public void close() {
         SmartAnvilConfig.save();
+
         if (client != null) {
             client.setScreen(parent);
         }
