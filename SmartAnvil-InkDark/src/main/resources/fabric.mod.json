@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "smartanvil",
+  "version": "${version}",
+  "name": "Smart Anvil",
+  "description": "Client-side anvil workflow assistant and enchantment merge planner.",
+  "authors": ["InkDark"],
+  "environment": "client",
+  "entrypoints": {
+    "client": ["inkdark.smartanvil.SmartAnvilClient"],
+    "modmenu": ["inkdark.smartanvil.SmartAnvilModMenu"]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "1.21.11",
+    "java": ">=21",
+    "fabric-api": "*",
+    "modmenu": "*"
+  }
+}
