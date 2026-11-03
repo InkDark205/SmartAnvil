@@ -5,7 +5,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -26,12 +26,12 @@ public final class EnchantmentPriorityScreen extends Screen {
     private TextFieldWidget searchField;
     private int page;
     private String searchText = "";
+    private boolean orderLoaded;
 
     public EnchantmentPriorityScreen(Screen parent) {
         super(Text.literal("Smart Anvil — Enchantment Priority"));
         this.parent = parent;
         this.config = SmartAnvilConfig.get();
-        loadOrder();
     }
 
     private void loadOrder() {
@@ -43,16 +43,27 @@ public final class EnchantmentPriorityScreen extends Screen {
             }
         }
 
-        List<String> registered = Registries.ENCHANTMENT.getIds().stream()
-                .map(Identifier::toString)
-                .sorted(Comparator.naturalOrder())
-                .toList();
-        ids.addAll(registered);
+        // Enchantments are a dynamic registry in modern Minecraft versions.
+        // They are supplied by the active connection, not Registries.
+        if (client != null && client.getNetworkHandler() != null) {
+            List<String> registered = client.getNetworkHandler()
+                    .getRegistryManager()
+                    .getOrThrow(RegistryKeys.ENCHANTMENT)
+                    .getIds().stream()
+                    .map(Identifier::toString)
+                    .sorted(Comparator.naturalOrder())
+                    .toList();
+            ids.addAll(registered);
+        }
         orderedIds.addAll(ids);
     }
 
     @Override
     protected void init() {
+        if (!orderLoaded) {
+            loadOrder();
+            orderLoaded = true;
+        }
         rebuildWidgets();
     }
 
