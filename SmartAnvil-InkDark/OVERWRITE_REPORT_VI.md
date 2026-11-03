@@ -21,3 +21,8 @@ Môi trường hiện tại không có lệnh Gradle và không thể chạy bui
 - Lọc chỉ thay đổi danh sách đang hiển thị; thứ tự gốc không bị sắp xếp lại.
 - Thứ tự được lưu vào `enchantmentPriorityCsv` trong `config/smartanvil.json`.
 - Danh sách được lấy từ enchantment registry hiện có, đồng thời giữ lại ID đã lưu để không làm mất mục cấu hình cũ.
+
+
+## Master toggle
+
+Added persistent `enabled` setting (default `false`) and a first-row ON/OFF control on the main config screen. The SMART/PRIORITY selector remains a separate mode selector. This does not claim to add the not-yet-implemented automated anvil workflow.

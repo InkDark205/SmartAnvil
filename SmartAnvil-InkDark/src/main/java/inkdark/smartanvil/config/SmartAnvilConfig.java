@@ -19,6 +19,8 @@ public final class SmartAnvilConfig {
     public enum SidePriority { LEFT, RIGHT }
     public enum RemovalMode { DROP, CHEST }
 
+    /** Master switch for Smart Anvil automation; OFF by default for safety. */
+    public boolean enabled = false;
     public Mode mode = Mode.SMART;
     public SidePriority sidePriority = SidePriority.LEFT;
     public RemovalMode removalMode = RemovalMode.DROP;

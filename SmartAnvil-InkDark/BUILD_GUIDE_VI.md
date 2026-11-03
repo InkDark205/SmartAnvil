@@ -27,3 +27,8 @@ Lưu ý: mã hiện tại là nền tảng cấu hình/lập kế hoạch enchan
 ### Giao diện thứ tự ưu tiên
 
 Trong màn hình cấu hình, chọn **Edit enchantment priority**. Nhập từ khóa vào thanh tìm kiếm để lọc danh sách. Dùng nút `↑` hoặc `↓` để thay đổi thứ hạng toàn cục; việc lọc không thay đổi thứ tự đã lưu. Chọn **Reset to alphabetical** nếu muốn sắp xếp lại toàn bộ danh sách theo ID.
+
+
+## Công tắc bật/tắt tổng
+
+Màn hình cấu hình có công tắc `Smart Anvil automation: ON/OFF` ở dòng đầu tiên. Mặc định OFF và được lưu vào `config/smartanvil.json` bằng thuộc tính `enabled`. Nút Mode bên dưới chỉ đổi giữa SMART và PRIORITY, không thay thế công tắc tổng. Lưu ý: source hiện tại mới có phần cấu hình/UI, chưa có đầy đủ luồng tự động thao tác đe.

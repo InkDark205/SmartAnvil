@@ -44,3 +44,8 @@ Automatic removal is OFF by default. Do not enable item-removal automation until
 ## Enchantment priority editor
 
 Open the Smart Anvil settings screen and choose **Edit enchantment priority**. The editor lists registered enchantments in a two-column table (enchantment name and saved priority rank), with up/down controls. The search field filters by identifier or display-style name without changing the underlying order. The order is saved to `config/smartanvil.json` in `enchantmentPriorityCsv`.
+
+
+### Master automation toggle
+
+The main settings screen now starts with a persistent `Smart Anvil automation: ON/OFF` switch. It defaults to OFF and is stored as `enabled` in `config/smartanvil.json`. The existing mode selector chooses SMART or PRIORITY; it is not the master switch. This source snapshot currently provides configuration/UI scaffolding and does not yet implement the full automated anvil interaction workflow.

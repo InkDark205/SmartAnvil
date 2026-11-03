@@ -23,6 +23,14 @@ public final class SmartAnvilConfigScreen extends Screen {
         int left = width / 2 - 155;
         int y = 52;
 
+        // Master ON/OFF switch is deliberately the first control and defaults OFF.
+        addDrawableChild(ButtonWidget.builder(enabledLabel(), button -> {
+            cfg.enabled = !cfg.enabled;
+            button.setMessage(enabledLabel());
+            SmartAnvilConfig.save();
+        }).dimensions(left, y, 310, 20).build());
+
+        y += 27;
         addDrawableChild(ButtonWidget.builder(modeLabel(), button -> {
             cfg.mode = cfg.mode == SmartAnvilConfig.Mode.SMART
                     ? SmartAnvilConfig.Mode.PRIORITY
@@ -83,6 +91,10 @@ public final class SmartAnvilConfigScreen extends Screen {
 
         addDrawableChild(ButtonWidget.builder(Text.literal("Done"), button -> close())
                 .dimensions(left, height - 32, 310, 20).build());
+    }
+
+    private Text enabledLabel() {
+        return Text.literal("Smart Anvil automation: " + (cfg.enabled ? "ON" : "OFF"));
     }
 
     private Text modeLabel() {
