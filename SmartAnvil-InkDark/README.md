@@ -1,6 +1,8 @@
 # Smart Anvil by InkDark — Minecraft 1.21.11 / Fabric
 
-This is the initial source project package for the requested client-side mod.
+This is an initial source project package for the requested client-side mod.
+The GUI/client Java sources use Yarn-mapped names, matching the `yarn_mappings`
+configured in `gradle.properties`.
 
 ## Target
 - Minecraft Java Edition 1.21.11

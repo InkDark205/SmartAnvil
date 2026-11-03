@@ -1,8 +1,8 @@
 package inkdark.smartanvil;
 
-import inkdark.smartanvil.gui.SmartAnvilConfigScreen;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import inkdark.smartanvil.gui.SmartAnvilConfigScreen;
 
 public final class SmartAnvilModMenu implements ModMenuApi {
     @Override
