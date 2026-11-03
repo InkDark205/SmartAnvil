@@ -3,7 +3,8 @@ name: Build SmartAnvil
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -11,10 +12,15 @@ permissions:
 
 jobs:
   build:
+    name: Build Minecraft Fabric Mod
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: SmartAnvil-InkDark
+
     steps:
-      - name: Checkout source
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Java 21
@@ -22,23 +28,39 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+          cache: gradle
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+
+      - name: Check project files
+        run: |
+          echo "Checking SmartAnvil project..."
+          test -f build.gradle -o -f build.gradle.kts
+          test -f settings.gradle -o -f settings.gradle.kts
+          test -d src/main
+          echo "Project files found."
 
       - name: Build SmartAnvil
         run: |
           if [ -f ./gradlew ]; then
             chmod +x ./gradlew
-            ./gradlew build --no-daemon
+            ./gradlew clean build --no-daemon
           else
-            gradle build --no-daemon
+            gradle clean build --no-daemon
           fi
 
-      - name: Upload JAR
+      - name: List generated JAR files
+        if: success()
+        run: |
+          echo "Generated JAR files:"
+          find build/libs -maxdepth 1 -type f -name '*.jar' -print
+
+      - name: Upload JAR artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: SmartAnvil-build
-          path: build/libs/*.jar
+          path: SmartAnvil-InkDark/build/libs/*.jar
           if-no-files-found: error
           retention-days: 7
