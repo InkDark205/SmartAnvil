@@ -76,6 +76,11 @@ public final class SmartAnvilConfigScreen extends Screen {
             SmartAnvilConfig.save();
         }).dimensions(left, y, 310, 20).build());
 
+        y += 27;
+        addDrawableChild(ButtonWidget.builder(Text.literal("Edit enchantment priority  →"), button -> {
+            if (client != null) client.setScreen(new EnchantmentPriorityScreen(this));
+        }).dimensions(left, y, 310, 20).build());
+
         addDrawableChild(ButtonWidget.builder(Text.literal("Done"), button -> close())
                 .dimensions(left, height - 32, 310, 20).build());
     }

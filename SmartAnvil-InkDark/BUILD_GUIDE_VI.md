@@ -22,3 +22,8 @@
 Đã thay `renderBackground(...)` bằng `DrawContext.fill(...)` trong `SmartAnvilConfigScreen.java`. Trên 1.21.11, gọi nền có blur có thể gây lỗi `Can only blur once per frame` khi blur đã được yêu cầu trong cùng frame. Bản sửa dùng nền màu tĩnh, không gọi blur.
 
 Lưu ý: mã hiện tại là nền tảng cấu hình/lập kế hoạch enchantment; chưa tự động thao tác slot/nhấn nút đe trong game.
+
+
+### Giao diện thứ tự ưu tiên
+
+Trong màn hình cấu hình, chọn **Edit enchantment priority**. Nhập từ khóa vào thanh tìm kiếm để lọc danh sách. Dùng nút `↑` hoặc `↓` để thay đổi thứ hạng toàn cục; việc lọc không thay đổi thứ tự đã lưu. Chọn **Reset to alphabetical** nếu muốn sắp xếp lại toàn bộ danh sách theo ID.

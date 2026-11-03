@@ -39,3 +39,8 @@ Automatic removal is OFF by default. Do not enable item-removal automation until
 
 - The settings screen uses a solid `DrawContext.fill` background instead of `renderBackground`, avoiding the duplicate frame-blur crash (`Can only blur once per frame`) reported on Minecraft 1.21.11.
 - This project remains a client-side configuration and enchantment-planning foundation. It does not yet perform automatic anvil slot clicks or server-authoritative item transfers.
+
+
+## Enchantment priority editor
+
+Open the Smart Anvil settings screen and choose **Edit enchantment priority**. The editor lists registered enchantments in a two-column table (enchantment name and saved priority rank), with up/down controls. The search field filters by identifier or display-style name without changing the underlying order. The order is saved to `config/smartanvil.json` in `enchantmentPriorityCsv`.

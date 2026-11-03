@@ -11,3 +11,13 @@
 
 ## Giới hạn xác minh
 Môi trường hiện tại không có lệnh Gradle và không thể chạy build Gradle offline. Vì vậy gói này là source project đã sửa; chưa tạo JAR mới và không được xem JAR cũ là bản đã vá. Chức năng tự động thao tác anvil vẫn chưa được triển khai/kiểm chứng.
+
+
+## Bổ sung trong lần cập nhật này
+
+- Thêm màn hình `EnchantmentPriorityScreen` mở từ cấu hình Smart Anvil.
+- Bảng hiển thị tên enchantment, thứ hạng ưu tiên và nút di chuyển lên/xuống.
+- Thanh tìm kiếm lọc theo ID hoặc tên đã định dạng, không phân biệt chữ hoa/chữ thường.
+- Lọc chỉ thay đổi danh sách đang hiển thị; thứ tự gốc không bị sắp xếp lại.
+- Thứ tự được lưu vào `enchantmentPriorityCsv` trong `config/smartanvil.json`.
+- Danh sách được lấy từ enchantment registry hiện có, đồng thời giữ lại ID đã lưu để không làm mất mục cấu hình cũ.
