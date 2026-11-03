@@ -15,3 +15,10 @@
 2. Mở tab **Actions** của repository và chọn workflow **Build SmartAnvil**.
 3. Nếu workflow chạy thành công, mở lần chạy mới nhất và tải artifact `SmartAnvil-1.21.11-Fabric` ở cuối trang.
 4. Đây chỉ xác nhận build thành công. Tính năng tự động thao tác anvil vẫn cần được triển khai và kiểm thử riêng.
+
+
+## Bản sửa lỗi màn hình cấu hình
+
+Đã thay `renderBackground(...)` bằng `DrawContext.fill(...)` trong `SmartAnvilConfigScreen.java`. Trên 1.21.11, gọi nền có blur có thể gây lỗi `Can only blur once per frame` khi blur đã được yêu cầu trong cùng frame. Bản sửa dùng nền màu tĩnh, không gọi blur.
+
+Lưu ý: mã hiện tại là nền tảng cấu hình/lập kế hoạch enchantment; chưa tự động thao tác slot/nhấn nút đe trong game.

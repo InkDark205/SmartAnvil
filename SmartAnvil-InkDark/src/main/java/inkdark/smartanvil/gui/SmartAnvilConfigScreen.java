@@ -1,16 +1,10 @@
-
 package inkdark.smartanvil.gui;
 
 import inkdark.smartanvil.config.SmartAnvilConfig;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.text.Text;
-
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
-import java.util.function.IntConsumer;
 
 public final class SmartAnvilConfigScreen extends Screen {
     private final Screen parent;
@@ -28,111 +22,62 @@ public final class SmartAnvilConfigScreen extends Screen {
 
         int left = width / 2 - 155;
         int y = 52;
-        int row = 27;
-        int w = 310;
 
-        // Master ON/OFF switch.
-        addDrawableChild(ButtonWidget.builder(
-                enabledLabel(),
-                button -> {
-                    cfg.enabled = !cfg.enabled;
-                    button.setMessage(enabledLabel());
-                    save();
-                }
-        ).dimensions(left, y, w, 20).build());
+        addDrawableChild(ButtonWidget.builder(modeLabel(), button -> {
+            cfg.mode = cfg.mode == SmartAnvilConfig.Mode.SMART
+                    ? SmartAnvilConfig.Mode.PRIORITY
+                    : SmartAnvilConfig.Mode.SMART;
+            button.setMessage(modeLabel());
+            SmartAnvilConfig.save();
+        }).dimensions(left, y, 310, 20).build());
 
-        // Mode.
-        y += row;
-        addDrawableChild(ButtonWidget.builder(
-                modeLabel(),
-                button -> {
-                    cfg.mode = cfg.mode == SmartAnvilConfig.Mode.SMART
-                            ? SmartAnvilConfig.Mode.PRIORITY
-                            : SmartAnvilConfig.Mode.SMART;
-                    button.setMessage(modeLabel());
-                    save();
-                }
-        ).dimensions(left, y, w, 20).build());
+        y += 27;
+        addDrawableChild(ButtonWidget.builder(sideLabel(), button -> {
+            cfg.sidePriority = cfg.sidePriority == SmartAnvilConfig.SidePriority.LEFT
+                    ? SmartAnvilConfig.SidePriority.RIGHT
+                    : SmartAnvilConfig.SidePriority.LEFT;
+            button.setMessage(sideLabel());
+            SmartAnvilConfig.save();
+        }).dimensions(left, y, 310, 20).build());
 
-        // Anvil side.
-        y += row;
-        addDrawableChild(ButtonWidget.builder(
-                sideLabel(),
-                button -> {
-                    cfg.sidePriority =
-                            cfg.sidePriority == SmartAnvilConfig.SidePriority.LEFT
-                                    ? SmartAnvilConfig.SidePriority.RIGHT
-                                    : SmartAnvilConfig.SidePriority.LEFT;
-                    button.setMessage(sideLabel());
-                    save();
-                }
-        ).dimensions(left, y, w, 20).build());
+        y += 27;
+        addDrawableChild(ButtonWidget.builder(delayLabel(), button -> {
+            cfg.actionDelayTicks = cfg.actionDelayTicks >= 10 ? 1 : cfg.actionDelayTicks + 1;
+            button.setMessage(delayLabel());
+            SmartAnvilConfig.save();
+        }).dimensions(left, y, 310, 20).build());
 
-        // Numeric sliders.
-        y += row;
-        addDrawableChild(new IntSlider(
-                left, y, w, 20,
-                "Action delay (ticks)",
-                cfg.actionDelayTicks, 1, 40,
-                v -> cfg.actionDelayTicks = v
-        ));
+        y += 27;
+        addDrawableChild(ButtonWidget.builder(linesLabel(), button -> {
+            cfg.maxEnchantmentLines = cfg.maxEnchantmentLines >= 12 ? 1 : cfg.maxEnchantmentLines + 1;
+            button.setMessage(linesLabel());
+            SmartAnvilConfig.save();
+        }).dimensions(left, y, 310, 20).build());
 
-        y += row;
-        addDrawableChild(new IntSlider(
-                left, y, w, 20,
-                "Max enchantment lines",
-                cfg.maxEnchantmentLines, 1, 30,
-                v -> cfg.maxEnchantmentLines = v
-        ));
+        y += 27;
+        addDrawableChild(ButtonWidget.builder(levelsLabel(), button -> {
+            cfg.maxTotalEnchantmentLevels = cfg.maxTotalEnchantmentLevels >= 100
+                    ? 10 : cfg.maxTotalEnchantmentLevels + 10;
+            button.setMessage(levelsLabel());
+            SmartAnvilConfig.save();
+        }).dimensions(left, y, 310, 20).build());
 
-        y += row;
-        addDrawableChild(new IntSlider(
-                left, y, w, 20,
-                "Max total enchantment levels",
-                cfg.maxTotalEnchantmentLevels, 1, 1000,
-                v -> cfg.maxTotalEnchantmentLevels = v
-        ));
+        y += 27;
+        addDrawableChild(ButtonWidget.builder(autoRemoveLabel(), button -> {
+            cfg.autoRemoveMaxedBooks = !cfg.autoRemoveMaxedBooks;
+            button.setMessage(autoRemoveLabel());
+            SmartAnvilConfig.save();
+        }).dimensions(left, y, 310, 20).build());
 
-        // Boolean settings.
-        y += row;
-        addDrawableChild(toggle(
-                left, y, w, "Auto-remove maxed books",
-                () -> cfg.autoRemoveMaxedBooks,
-                v -> cfg.autoRemoveMaxedBooks = v
-        ));
+        y += 27;
+        addDrawableChild(ButtonWidget.builder(statusLabel(), button -> {
+            cfg.showStatusMessages = !cfg.showStatusMessages;
+            button.setMessage(statusLabel());
+            SmartAnvilConfig.save();
+        }).dimensions(left, y, 310, 20).build());
 
-        y += row;
-        addDrawableChild(toggle(
-                left, y, w, "Preserve compatible enchantments",
-                () -> cfg.preserveCompatibleEnchantments,
-                v -> cfg.preserveCompatibleEnchantments = v
-        ));
-
-        y += row;
-        addDrawableChild(toggle(
-                left, y, w, "Require enough experience",
-                () -> cfg.requireEnoughExperience,
-                v -> cfg.requireEnoughExperience = v
-        ));
-
-        y += row;
-        addDrawableChild(toggle(
-                left, y, w, "Status messages",
-                () -> cfg.showStatusMessages,
-                v -> cfg.showStatusMessages = v
-        ));
-
-        addDrawableChild(ButtonWidget.builder(
-                Text.literal("Done"),
-                button -> close()
-        ).dimensions(left, height - 28, w, 20).build());
-    }
-
-    private Text enabledLabel() {
-        return Text.literal(
-                "SmartAnvil: " + (cfg.enabled ? "ON" : "OFF")
-                        + " (click to toggle)"
-        );
+        addDrawableChild(ButtonWidget.builder(Text.literal("Done"), button -> close())
+                .dimensions(left, height - 32, 310, 20).build());
     }
 
     private Text modeLabel() {
@@ -140,117 +85,49 @@ public final class SmartAnvilConfigScreen extends Screen {
     }
 
     private Text sideLabel() {
-        return Text.literal(
-                "Anvil side priority: " + cfg.sidePriority
-                        + " (click to switch)"
-        );
+        return Text.literal("Anvil side priority: " + cfg.sidePriority + " (click to switch)");
     }
 
-    private ButtonWidget toggle(
-            int x, int y, int width, String label,
-            BooleanSupplier getter,
-            Consumer<Boolean> setter
-    ) {
-        return ButtonWidget.builder(
-                toggleLabel(label, getter.getAsBoolean()),
-                button -> {
-                    boolean next = !getter.getAsBoolean();
-                    setter.accept(next);
-                    button.setMessage(toggleLabel(label, next));
-                    save();
-                }
-        ).dimensions(x, y, width, 20).build();
+    private Text delayLabel() {
+        return Text.literal("Action delay: " + cfg.actionDelayTicks + " ticks");
     }
 
-    private Text toggleLabel(String label, boolean enabled) {
-        return Text.literal(label + ": " + (enabled ? "ON" : "OFF"));
+    private Text linesLabel() {
+        return Text.literal("Max enchantment lines: " + cfg.maxEnchantmentLines);
     }
 
-    private void save() {
-        SmartAnvilConfig.save();
+    private Text levelsLabel() {
+        return Text.literal("Max total enchantment levels: " + cfg.maxTotalEnchantmentLevels);
+    }
+
+    private Text autoRemoveLabel() {
+        return Text.literal("Auto-remove maxed books: " + (cfg.autoRemoveMaxedBooks ? "ON" : "OFF"));
+    }
+
+    private Text statusLabel() {
+        return Text.literal("Status messages: " + (cfg.showStatusMessages ? "ON" : "OFF"));
     }
 
     @Override
-    public void render(
-            DrawContext context, int mouseX, int mouseY, float delta
-    ) {
-        // Avoid invoking Minecraft's blur background a second time.
-        context.fill(0, 0, width, height, 0xC0101010);
-
-        context.drawCenteredTextWithShadow(
-                textRenderer, title, width / 2, 18, 0xFFFFFF
-        );
-
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        // Avoid renderBackground(): its blur pass can be requested twice in one frame
+        // on 1.21.11, causing IllegalStateException: Can only blur once per frame.
+        // A solid fill keeps this settings screen independent of the blur pipeline.
+        context.fill(0, 0, width, height, 0xE0101010);
+        context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 18, 0xFFFFFF);
         context.drawCenteredTextWithShadow(
                 textRenderer,
-                Text.literal("Saved to config/smartanvil.json"),
+                Text.literal("Settings are saved to config/smartanvil.json"),
                 width / 2, 35, 0xAAAAAA
         );
-
         super.render(context, mouseX, mouseY, delta);
     }
 
     @Override
     public void close() {
         SmartAnvilConfig.save();
-
         if (client != null) {
             client.setScreen(parent);
-        }
-    }
-
-    private static final class IntSlider extends SliderWidget {
-        private final String label;
-        private final int min;
-        private final int max;
-        private final IntConsumer onChange;
-        private int currentValue;
-
-        IntSlider(
-                int x, int y, int width, int height,
-                String label, int initialValue,
-                int min, int max, IntConsumer onChange
-        ) {
-            super(
-                    x, y, width, height, Text.empty(),
-                    (clamp(initialValue, min, max) - min)
-                            / (double) (max - min)
-            );
-
-            this.label = label;
-            this.min = min;
-            this.max = max;
-            this.onChange = onChange;
-            this.currentValue = clamp(initialValue, min, max);
-
-            updateMessage();
-        }
-
-        private static int clamp(int value, int min, int max) {
-            return Math.max(min, Math.min(max, value));
-        }
-
-        private int sliderValue() {
-            return clamp(
-                    min + (int) Math.round(value * (max - min)),
-                    min, max
-            );
-        }
-
-        @Override
-        protected void updateMessage() {
-            setMessage(Text.literal(label + ": " + sliderValue()));
-        }
-
-        @Override
-        protected void applyValue() {
-            int next = sliderValue();
-
-            if (next != currentValue) {
-                currentValue = next;
-                onChange.accept(next);
-                SmartAnvilConfig.save();
-            }
         }
     }
 }

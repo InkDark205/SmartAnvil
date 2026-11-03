@@ -33,3 +33,9 @@ The remapped mod JAR should be in `build/libs/` after a successful build. Instal
 
 ## Safety defaults
 Automatic removal is OFF by default. Do not enable item-removal automation until the inventory/chest-routing state machine is implemented and tested in a disposable world.
+
+
+## Fix in this revision
+
+- The settings screen uses a solid `DrawContext.fill` background instead of `renderBackground`, avoiding the duplicate frame-blur crash (`Can only blur once per frame`) reported on Minecraft 1.21.11.
+- This project remains a client-side configuration and enchantment-planning foundation. It does not yet perform automatic anvil slot clicks or server-authoritative item transfers.
